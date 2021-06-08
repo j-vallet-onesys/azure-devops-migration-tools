@@ -41,7 +41,11 @@ namespace MigrationTools._EngineV1.Clients
             WorkItemCollection workItemCollection;
             try
             {
-                workItemCollection = wiClient.Store.Query(Query);
+                // Bidouille pour changement de nom de projet
+                string newQuery = wiClient.Project.Name == "P2"
+                    ? Query
+                    : Query.Replace("'P2\\", $"'{wiClient.Project.Name}\\");
+                workItemCollection = wiClient.Store.Query(newQuery);
                 foreach (WorkItem item in workItemCollection)
                 {
                     try

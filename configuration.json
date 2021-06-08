@@ -1,46 +1,32 @@
 {
-  "Version": "0.0",
-  "LogLevel": "Verbose",
-  "workaroundForQuerySOAPBugEnabled": false,
+  "ChangeSetMappingFile": null,
   "Source": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "https://dev.azure.com/nkdagility-preview/",
-    "Project": "migrationSource1",
-    "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
-    "AuthenticationMode": "Prompt",
+    "Collection": "https://tfs.usgpeople.fr/OneSys",
+    "Project": "P2",
+    "ReflectedWorkItemIDFieldName": "TfsMigrationTool.ReflectedWorkItemId",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "qosss7crwz3vie4fupzpaafjndoy6g6ulgkzhoxtmjgicv2lqjyq",
+    "AuthenticationMode": "Prompt",
+    "PersonalAccessToken": "",
     "LanguageMaps": {
-      "AreaPath": "Area",
-      "IterationPath": "Iteration"
+      "AreaPath": "Zone",
+      "IterationPath": "Itération"
     }
   },
   "Target": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "https://dev.azure.com/nkdagility-preview/",
-    "Project": "migrationTarget1",
-    "ReflectedWorkItemIDFieldName": "nkdScrum.ReflectedWorkItemId",
-    "AuthenticationMode": "Prompt",
+    "Collection": "https://tfs2.usgpeople.fr/OnesysDevOps",
+    "Project": "TestJoss",
+    "ReflectedWorkItemIDFieldName": "ReflectedWorkItemId",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "qosss7crwz3vie4fupzpaafjndoy6g6ulgkzhoxtmjgicv2lqjyq",
+    "AuthenticationMode": "Prompt",
+    "PersonalAccessToken": "",
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
     }
   },
   "FieldMaps": [
-    {
-      "$type": "MultiValueConditionalMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceFieldsAndValues": {
-        "Field1": "Value1",
-        "Field2": "Value2"
-      },
-      "targetFieldsAndValues": {
-        "Field1": "Value1",
-        "Field2": "Value2"
-      }
-    },
     {
       "$type": "FieldBlankMapConfig",
       "WorkItemTypeName": "*",
@@ -53,132 +39,201 @@
       "targetField": "System.State",
       "defaultValue": "New",
       "valueMapping": {
-        "Approved": "New",
-        "New": "New",
-        "Done": "Closed",
-        "Removed": "Removed"
+        "Nouveau": "New",
+        "Approuvé": "Active",
+        "En cours": "Active",
+        "Validé": "Resolved",
+        "Terminé": "Closed",
+        "Supprimé": "Removed"
       }
     },
     {
       "$type": "FieldValueMapConfig",
-      "WorkItemTypeName": "Task",
-      "sourceField": "System.State",
-      "targetField": "System.State",
-      "defaultValue": "New",
+      "WorkItemTypeName": "Bogue",
+      "sourceField": "System.Reason",
+      "targetField": "System.Reason",
       "valueMapping": {
-        "Committed": "Active",
-        "In Progress": "Active",
-        "To Do": "New",
-        "Done": "Closed"
+        "Accepté": "Accepted",
+        "Approuvé par le directeur de produit": "Implementation started",
+        "Déplacé vers le backlog": "Moved to backlog",
+        "Différé": "Deferred",
+        "Dupliqué": "Duplicate",
+        "Échec de la génération": "Build Failure",
+        "Nouvel élément de backlog": "New",
+        "Fermé": "Closed",
+        "Implémentation démarrée": "Implementation started",
+        "Nouveau défaut signalé": "New",
+        "Supprimé de Backlog": "Removed from the backlog",
+        "Travail terminé": "Fixed and verified",
+        "Travail interrompu": "Acceptance tests fail",
+        "Engagement donné par l\u0027équipe": "Fixed",
+        "Travail supplémentaire trouvé": "Regression"
       }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Élément de backlog de produit",
+      "sourceField": "System.Reason",
+      "targetField": "System.Reason",
+      "valueMapping": {
+        "Accepté": "Accepted",
+        "Approuvé par le directeur de produit": "Implementation started",
+        "Déplacé vers le backlog": "Moved to backlog",
+        "Différé": "Deferred",
+        "Dupliqué": "Duplicate",
+        "Échec de la génération": "Build Failure",
+        "Nouvel élément de backlog": "New",
+        "Fermé": "Closed",
+        "Implémentation démarrée": "Implementation started",
+        "Nouveau défaut signalé": "New",
+        "Supprimé de Backlog": "Removed from the backlog",
+        "Travail interrompu": "Acceptance tests fail",
+        "Travail terminé": "Acceptance tests pass",
+        "Engagement donné par l\u0027équipe": "Code complete and unit tests pass",
+        "Travail supplémentaire trouvé": "Reintroduced in Scope"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Fonctionnalité",
+      "sourceField": "System.Reason",
+      "targetField": "System.Reason",
+      "valueMapping": {
+        "Accepté": "Accepted",
+        "Approuvé par le directeur de produit": "Implementation started",
+        "Déplacé vers le backlog": "Moved to backlog",
+        "Différé": "Deferred",
+        "Dupliqué": "Duplicate",
+        "Échec de la génération": "Build Failure",
+        "Nouvel élément de backlog": "New",
+        "Fermé": "Closed",
+        "Implémentation démarrée": "Implementation started",
+        "Nouveau défaut signalé": "New",
+        "Supprimé de Backlog": "Removed from the backlog",
+        "Travail interrompu": "Acceptance tests fail",
+        "Travail terminé": "Acceptance tests pass",
+        "Engagement donné par l\u0027équipe": "Stories complete",
+        "Travail supplémentaire trouvé": "Reintroduced in Scope"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "*",
+      "sourceField": "Microsoft.VSTS.Common.Severity",
+      "targetField": "Microsoft.VSTS.Common.Severity",
+      "defaultValue": "3 - Medium",
+      "valueMapping": {
+        "1 - Critique": "1 - Critical",
+        "2 - Élevée": "2 - High",
+        "3 - Moyenne": "3 - Medium",
+        "4 - Faible": "4 - Low"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "*",
+      "sourceField": "Microsoft.VSTS.Common.Activity",
+      "targetField": "Microsoft.VSTS.Common.Activity",
+      "defaultValue": null,
+      "valueMapping": {
+        "Déploiement": "Deployment",
+        "Design": "Design",
+        "Développement": "Development",
+        "Documentation": "Documentation",
+        "Spécifications": "Requirements",
+        "Test en cours": "Testing"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "*",
+      "sourceField": "Microsoft.VSTS.Common.ValueArea",
+      "targetField": "Microsoft.VSTS.Common.ValueArea",
+      "defaultValue": null,
+      "valueMapping": {
+        "Architectural": "Architectural",
+        "Métier": "Business"
+      }
+    },
+    {
+      "$type": "FieldEmptyToNullMapConfig",
+      "WorkItemTypeName": "*",
+      "targetField": "Microsoft.VSTS.Common.ResolvedReason"
+    },
+    {
+      "$type": "FieldEmptyToNullMapConfig",
+      "WorkItemTypeName": "*",
+      "targetField": "Microsoft.VSTS.Common.ResolvedBy"
+    },
+    {
+      "$type": "FieldEmptyToNullMapConfig",
+      "WorkItemTypeName": "*",
+      "targetField": "Microsoft.VSTS.Common.ResolvedDate"
     },
     {
       "$type": "FieldtoFieldMapConfig",
       "WorkItemTypeName": "*",
-      "sourceField": "Microsoft.VSTS.Common.BacklogPriority",
-      "targetField": "Microsoft.VSTS.Common.StackRank"
-    },
-    {
-      "$type": "FieldtoFieldMultiMapConfig",
-      "WorkItemTypeName": "*",
-      "SourceToTargetMappings": {
-        "SourceField1": "TargetField1",
-        "SourceField2": "TargetField2"
-      }
-    },
-    {
-      "$type": "FieldtoTagMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceField": "System.State",
-      "formatExpression": "ScrumState:{0}"
-    },
-    {
-      "$type": "FieldMergeMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceField1": "System.Description",
-      "sourceField2": "Microsoft.VSTS.Common.AcceptanceCriteria",
-      "targetField": "System.Description",
-      "formatExpression": "{0} <br/><br/><h3>Acceptance Criteria</h3>{1}",
-      "doneMatch": "##DONE##"
-    },
-    {
-      "$type": "RegexFieldMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceField": "COMPANY.PRODUCT.Release",
-      "targetField": "COMPANY.DEVISION.MinorReleaseVersion",
-      "pattern": "PRODUCT \\d{4}.(\\d{1})",
-      "replacement": "$1"
-    },
-    {
-      "$type": "FieldValuetoTagMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceField": "Microsoft.VSTS.CMMI.Blocked",
-      "pattern": "Yes",
-      "formatExpression": "{0}"
-    },
-    {
-      "$type": "TreeToTagMapConfig",
-      "WorkItemTypeName": "*",
-      "toSkip": 3,
-      "timeTravel": 1
+      "sourceField": "Microsoft.VSTS.Scheduling.Effort",
+      "targetField": "Microsoft.VSTS.Scheduling.StoryPoints"
     }
   ],
-  "WorkItemTypeDefinition": {
-    "sourceWorkItemTypeName": "targetWorkItemTypeName"
-  },
   "GitRepoMapping": null,
+  "LogLevel": "Information",
+  "Endpoints": {
+    "InMemoryWorkItemEndpoints": [
+      {
+        "Name": "Source",
+        "EndpointEnrichers": null
+      },
+      {
+        "Name": "Target",
+        "EndpointEnrichers": null
+      }
+    ]
+  },
   "Processors": [
     {
-      "$type": "WorkItemDeleteConfig",
-      "Enabled": true,
-      "WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
-      "WIQLOrderBit": "[System.ChangedDate] desc"
+      "$type": "TfsAreaAndIterationProcessorOptions",
+      "Enabled": false,
+      "PrefixProjectToNodes": false,
+      "NodeBasePaths": null,
+      "ProcessorEnrichers": null,
+      "SourceName": "Source",
+      "TargetName": "Target"
     },
-    //{
-    //  "$type": "WorkItemMigrationConfig",
-    //  "ReplayRevisions": true,
-    //  "PrefixProjectToNodes": false,
-    //  "UpdateCreatedDate": true,
-    //  "UpdateCreatedBy": true,
-    //  "BuildFieldTable": false,
-    //  "AppendMigrationToolSignatureFooter": false,
-    //  "WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
-    //  "WIQLOrderBit": "[System.ChangedDate] desc",
-    //  "Enabled": true,
-    //  "LinkMigration": true,
-    //  "AttachmentMigration": true,
-    //  "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
-    //  "FixHtmlAttachmentLinks": false,
-    //  "SkipToFinalRevisedWorkItemType": false,
-    //  "WorkItemCreateRetryLimit": 5,
-    //  "FilterWorkItemsThatAlreadyExistInTarget": true,
-    //  "PauseAfterEachWorkItem": false,
-    //  "AttachmentMaxSize": 480000000,
-    //  "CollapseRevisions": false,
-    //  "LinkMigrationSaveEachAsAdded": true
-    //},
     {
       "$type": "WorkItemMigrationConfig",
+      "Enabled": true,
       "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
       "BuildFieldTable": false,
       "AppendMigrationToolSignatureFooter": false,
-      "WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
+      "WIQLQueryBit": "AND [System.WorkItemType] <> 'Tâche' AND [System.State] <> 'Supprimé' AND [System.IterationPath] IN ('P2\\202105-21', 'P2\\202106-23')",
       "WIQLOrderBit": "[System.ChangedDate] desc",
-      "Enabled": true,
       "LinkMigration": true,
       "AttachmentMigration": true,
       "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
       "FixHtmlAttachmentLinks": false,
       "SkipToFinalRevisedWorkItemType": true,
       "WorkItemCreateRetryLimit": 5,
-      "FilterWorkItemsThatAlreadyExistInTarget": false,
+      "FilterWorkItemsThatAlreadyExistInTarget": true,
       "PauseAfterEachWorkItem": false,
       "AttachmentMaxSize": 480000000,
       "CollapseRevisions": false,
-      "LinkMigrationSaveEachAsAdded": true
+      "LinkMigrationSaveEachAsAdded": false,
+      "GenerateMigrationComment": true,
+      "NodeBasePaths": [
+      ],
+      "WorkItemIDs": null
     }
-  ]
+  ],
+  "Version": "0.0",
+  "workaroundForQuerySOAPBugEnabled": false,
+  "WorkItemTypeDefinition": {
+    "Bogue": "Bug",
+    "Élément de backlog de produit": "User Story",
+    "Fonctionnalité": "Feature"
+  }
 }

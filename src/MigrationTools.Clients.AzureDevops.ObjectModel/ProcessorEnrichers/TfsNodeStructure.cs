@@ -68,8 +68,8 @@ namespace MigrationTools.Enrichers
         public string GetNewNodeName(string sourceNodeName, TfsNodeStructureType nodeStructureType)
         {
             Log.LogDebug("NodeStructureEnricher.GetNewNodeName({sourceNodeName}, {nodeStructureType})", sourceNodeName, nodeStructureType.ToString());
-            string targetStructureName = NodeStructureTypeToLanguageSpecificName(_sourceLanguageMaps, nodeStructureType);
-            string sourceStructureName = NodeStructureTypeToLanguageSpecificName(_targetLanguageMaps, nodeStructureType);
+            string targetStructureName = NodeStructureTypeToLanguageSpecificName(_targetLanguageMaps, nodeStructureType);
+            string sourceStructureName = NodeStructureTypeToLanguageSpecificName(_sourceLanguageMaps, nodeStructureType);
             // Replace project name with new name (if necessary) and inject nodePath (Area or Iteration) into path for node validation
             string newNodeName;
             if (_prefixProjectToNodes)

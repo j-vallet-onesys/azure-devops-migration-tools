@@ -330,6 +330,13 @@ namespace VstsSyncMigrator.Engine
             fieldMappingTimer.Stop();
         }
 
+        private void EmptyResolvedStates(WorkItem newWorkItem)
+        {
+            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedBy"].Value = "";
+            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedDate"].Value = null;
+            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedReason"].Value = "";
+        }
+
         private void ProcessHTMLFieldAttachements(WorkItemData targetWorkItem)
         {
             if (targetWorkItem != null && _config.FixHtmlAttachmentLinks)
@@ -583,6 +590,8 @@ namespace VstsSyncMigrator.Engine
                     }
                     targetWorkItem.ToWorkItem().Fields[Engine.Target.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName].Value = reflectedUri.ToString();
 
+                    manageResolvedBy(targetWorkItem);
+
                     targetWorkItem.SaveToAzureDevOps();
                     TraceWriteLine(LogEventLevel.Information,
                         " Saved TargetWorkItem {TargetWorkItemId}. Replayed revision {RevisionNumber} of {RevisionsToMigrateCount}",
@@ -628,6 +637,20 @@ namespace VstsSyncMigrator.Engine
             }
 
             return targetWorkItem;
+        }
+
+        private void manageResolvedBy(WorkItemData targetWorkItem)
+        {
+            var newWi = targetWorkItem.ToWorkItem();
+
+            if (!newWi.Fields.Contains("Microsoft.VSTS.Common.ResolvedBy") || newWi.Fields["Microsoft.VSTS.Common.ResolvedBy"].Value?.ToString() == "")
+            {
+                return;
+            }
+            if (new [] { "New", "Active" }.Contains(newWi.Fields["System.State"].Value))
+            {
+                EmptyResolvedStates(newWi);
+            }
         }
 
         private List<RevisionItem> RevisionsToMigrate(WorkItemData sourceWorkItem, WorkItemData targetWorkItem)

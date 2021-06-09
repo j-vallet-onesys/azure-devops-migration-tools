@@ -156,28 +156,15 @@
       }
     },
     {
-      "$type": "FieldEmptyToNullMapConfig",
-      "WorkItemTypeName": "*",
-      "targetField": "Microsoft.VSTS.Common.ResolvedReason"
-    },
-    {
-      "$type": "FieldEmptyToNullMapConfig",
-      "WorkItemTypeName": "*",
-      "targetField": "Microsoft.VSTS.Common.ResolvedBy"
-    },
-    {
-      "$type": "FieldEmptyToNullMapConfig",
-      "WorkItemTypeName": "*",
-      "targetField": "Microsoft.VSTS.Common.ResolvedDate"
-    },
-    {
       "$type": "FieldtoFieldMapConfig",
       "WorkItemTypeName": "*",
       "sourceField": "Microsoft.VSTS.Scheduling.Effort",
       "targetField": "Microsoft.VSTS.Scheduling.StoryPoints"
     }
   ],
-  "GitRepoMapping": null,
+  "GitRepoMapping": {
+    "pilott2": "Pilott"
+  },
   "LogLevel": "Information",
   "Endpoints": {
     "InMemoryWorkItemEndpoints": [
@@ -211,6 +198,7 @@
       "BuildFieldTable": false,
       "AppendMigrationToolSignatureFooter": false,
       "WIQLQueryBit": "AND [System.WorkItemType] <> 'Tâche' AND [System.State] <> 'Supprimé' AND [System.IterationPath] IN ('P2\\202105-21', 'P2\\202106-23')",
+      //"WIQLQueryBit": "AND [System.WorkItemType] <> 'Tâche' AND [System.State] <> 'Supprimé' AND [System.IterationPath] IN ('P2\\202105-21', 'P2\\202106-23')",
       "WIQLOrderBit": "[System.ChangedDate] desc",
       "LinkMigration": true,
       "AttachmentMigration": true,
@@ -218,7 +206,7 @@
       "FixHtmlAttachmentLinks": false,
       "SkipToFinalRevisedWorkItemType": true,
       "WorkItemCreateRetryLimit": 5,
-      "FilterWorkItemsThatAlreadyExistInTarget": true,
+      "FilterWorkItemsThatAlreadyExistInTarget": false,
       "PauseAfterEachWorkItem": false,
       "AttachmentMaxSize": 480000000,
       "CollapseRevisions": false,

@@ -330,13 +330,6 @@ namespace VstsSyncMigrator.Engine
             fieldMappingTimer.Stop();
         }
 
-        private void EmptyResolvedStates(WorkItem newWorkItem)
-        {
-            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedBy"].Value = "";
-            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedDate"].Value = null;
-            newWorkItem.Fields["Microsoft.VSTS.Common.ResolvedReason"].Value = "";
-        }
-
         private void ProcessHTMLFieldAttachements(WorkItemData targetWorkItem)
         {
             if (targetWorkItem != null && _config.FixHtmlAttachmentLinks)
@@ -590,7 +583,7 @@ namespace VstsSyncMigrator.Engine
                     }
                     targetWorkItem.ToWorkItem().Fields[Engine.Target.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName].Value = reflectedUri.ToString();
 
-                    manageResolvedBy(targetWorkItem);
+                    ManageEmptyFieldsForState(targetWorkItem);
 
                     targetWorkItem.SaveToAzureDevOps();
                     TraceWriteLine(LogEventLevel.Information,
@@ -639,17 +632,35 @@ namespace VstsSyncMigrator.Engine
             return targetWorkItem;
         }
 
-        private void manageResolvedBy(WorkItemData targetWorkItem)
+        private void EnsureIsEmpty(WorkItemData targetWorkItem, string[] fields, string[] toStates)
         {
             var newWi = targetWorkItem.ToWorkItem();
 
-            if (!newWi.Fields.Contains("Microsoft.VSTS.Common.ResolvedBy") || newWi.Fields["Microsoft.VSTS.Common.ResolvedBy"].Value?.ToString() == "")
+            if (!newWi.Fields.Contains(fields[0]) || newWi.Fields[fields[0]].Value?.ToString() == "")
             {
                 return;
             }
-            if (new [] { "New", "Active" }.Contains(newWi.Fields["System.State"].Value))
+            if (toStates.Contains(newWi.Fields["System.State"].Value))
             {
-                EmptyResolvedStates(newWi);
+                EmptyFields(newWi, fields);
+            }
+        }
+
+        private void ManageEmptyFieldsForState(WorkItemData targetWorkItem)
+        {
+            EnsureIsEmpty(targetWorkItem,
+                new[] { "Microsoft.VSTS.Common.ResolvedBy", "Microsoft.VSTS.Common.ResolvedDate", "Microsoft.VSTS.Common.ResolvedReason" },
+                new[] { "New", "Active" });
+            EnsureIsEmpty(targetWorkItem,
+                new[] { "Microsoft.VSTS.Common.ActivatedBy", "Microsoft.VSTS.Common.ActivatedDate" },
+                new[] { "New" });
+        }
+
+        private void EmptyFields(WorkItem newWorkItem, string[] fields)
+        {
+            foreach (var field in fields)
+            {
+                newWorkItem.Fields[field].Value = null;
             }
         }
 
